@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import SignUp from "./signup";
 
 function SignIn() {
   return (
@@ -13,7 +15,7 @@ function SignIn() {
           </div>
           </div>
         </div>
-        <div className="bg-white h-screen w-[56%] ">
+        <div className="bg-white h-screen w-[56%]">
           <div className="text-left mt-[100px] ml-[200px]">
             <p className=" text-4xl font-bold">Continue Your Journey</p>
             <p className=" text-4xl font-bold">With RentEase!!!</p>
@@ -26,7 +28,9 @@ function SignIn() {
             <input type="button" value="Sign In" className=" h-[35px] w-[325px]  rounded-[20px] bg-button px-3 text-white shadow-md cursor-pointer focus-visible:outline hover:bg-button/85" />
             <div className="flex flex-row  justify-between">
             <p className="text-md font-semibold py-1">Don't Have An Account ?</p>
-            <input type="button" value="Sign Up" className=" h-[35px] w-[115px]  rounded-[20px] bg-black px-3 text-white shadow-md cursor-pointer focus-visible:outline hover:bg-black/80" />
+            <Link to={'/signup'} className=" h-[35px] w-[115px] py-1 rounded-[20px] bg-black text-center text-white shadow-md cursor-pointer focus-visible:outline hover:bg-black/80">
+            Sign Up
+            </Link>
             </div>
           </form>
         </div>
