@@ -45,7 +45,7 @@ function SignUp() {
                 className="h-[35px] w-[100px]  rounded-[20px] px-3 bg-background placeholder-black font-normal focus:ring-1 focus:ring-inset focus:ring-indigo-600 outline-none hover:ring-1 hover:ring-indigo-600 hover:ring-inset shadow-md hover:shadow-md hover:shadow-slate-900/25"
                 placeholder="OTP"
               />
-              <input type="button" value="Get OTP" className="h-[35px] w-[90px] rounded-[20px] bg-[#49c41e] px-3 text-white shadow-md cursor-pointer focus-visible:outline hover:bg-[#49c41e]/85" />
+              <input type="button" value="Get OTP" className="h-[35px] w-[90px] rounded-[20px] bg-button px-3 text-white shadow-md cursor-pointer focus-visible:outline hover:bg-button/85" />
             </div >
             <input type="button" value="Sign Up" className=" h-[35px] w-[325px]  rounded-[20px] bg-black px-3 text-white shadow-md cursor-pointer focus-visible:outline hover:bg-black/80" />
             <div className="flex flex-row  justify-between">

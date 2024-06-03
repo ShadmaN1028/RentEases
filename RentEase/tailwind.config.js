@@ -9,6 +9,7 @@ export default {
     extend: {
       colors: {
         'background': '#d2d2d2',
+        'button' : '#49c41e'
       },
     },
   },

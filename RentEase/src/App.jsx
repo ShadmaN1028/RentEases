@@ -1,9 +1,9 @@
 import React from 'react'
-import SignUp from './signup'
+import SignIn from './signin'
 function App() {
   return (
     <>
-    <SignUp/>
+    <SignIn/>
     </>
   )
 }
