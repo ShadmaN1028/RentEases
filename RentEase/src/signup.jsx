@@ -36,7 +36,7 @@ function SignUp() {
               <select
                 name=""
                 id=""
-                className="h-[35px] w-[110px]  rounded-[20px] pl-3 pr-2 bg-background placeholder-black font-normal focus:ring-1 focus:ring-inset focus:ring-indigo-600 outline-none hover:ring-1 hover:ring-indigo-600 hover:ring-inset shadow-md hover:shadow-md hover:shadow-slate-900/25"
+                className="h-[35px] w-[110px]  rounded-[20px] pl-3 pr-2 bg-background placeholder-black font-normal focus:ring-1 focus:ring-inset focus:ring-indigo-600 outline-none hover:ring-1 hover:ring-indigo-600 hover:ring-inset shadow-md hover:shadow-md  hover:shadow-slate-900/25"
               >
                 <option hidden>User Type</option>
                 <option>Owner</option>
@@ -47,12 +47,12 @@ function SignUp() {
                 className="h-[35px] w-[100px]  rounded-[20px] px-3 bg-background placeholder-black font-normal focus:ring-1 focus:ring-inset focus:ring-indigo-600 outline-none hover:ring-1 hover:ring-indigo-600 hover:ring-inset shadow-md hover:shadow-md hover:shadow-slate-900/25"
                 placeholder="OTP"
               />
-              <input type="button" value="Get OTP" className="h-[35px] w-[90px] rounded-[20px] bg-button px-3 text-white shadow-md cursor-pointer focus-visible:outline hover:bg-button/85" />
+              <input type="button" value="Get OTP" className="h-[35px] w-[90px] rounded-[20px] bg-button px-3 text-white shadow-md cursor-pointer focus-visible:outline hover:bg-button/85 hover:shadow-md hover:shadow-slate-900/25" />
             </div >
-            <input type="button" value="Sign Up" className=" h-[35px] w-[325px]  rounded-[20px] bg-black px-3 text-white shadow-md cursor-pointer focus-visible:outline hover:bg-black/80" />
+            <input type="button" value="Sign Up" className=" h-[35px] w-[325px]  rounded-[20px] bg-black px-3 text-white shadow-md cursor-pointer focus-visible:outline hover:bg-black/80 hover:shadow-md hover:shadow-slate-900/25" />
             <div className="flex flex-row  justify-between">
             <p className="text-md font-semibold py-1">Already Have An Account ?</p>
-            <Link to={'/signin'} className=" h-[35px] w-[115px] py-1 rounded-[20px] bg-black text-center text-white shadow-md cursor-pointer focus-visible:outline hover:bg-black/80">
+            <Link to={'/signin'} className=" h-[35px] w-[115px] py-1 rounded-[20px] bg-black text-center text-white cursor-pointer focus-visible:outline hover:bg-black/80 shadow-md hover:shadow-md hover:shadow-slate-900/25">
             Sign In
             </Link>
             </div>

@@ -25,10 +25,10 @@ function SignIn() {
             <input type="Email" className="inputf" placeholder="Email" />
 
             <input type="password" className="inputf" placeholder="Password" />
-            <input type="button" value="Sign In" className=" h-[35px] w-[325px]  rounded-[20px] bg-button px-3 text-white shadow-md cursor-pointer focus-visible:outline hover:bg-button/85" />
+            <input type="button" value="Sign In" className=" h-[35px] w-[325px]  rounded-[20px] bg-button px-3 text-white shadow-md hover:shadow-md hover:shadow-slate-900/25 cursor-pointer focus-visible:outline hover:bg-button/85" />
             <div className="flex flex-row  justify-between">
             <p className="text-md font-semibold py-1">Don't Have An Account ?</p>
-            <Link to={'/signup'} className=" h-[35px] w-[115px] py-1 rounded-[20px] bg-black text-center text-white shadow-md cursor-pointer focus-visible:outline hover:bg-black/80">
+            <Link to={'/signup'} className=" h-[35px] w-[115px] py-1 rounded-[20px] bg-black text-center text-white shadow-md cursor-pointer focus-visible:outline hover:bg-black/80 hover:shadow-md hover:shadow-slate-900/25">
             Sign Up
             </Link>
             </div>
