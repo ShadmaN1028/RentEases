@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 function SignUp() {
   return (
     <>
-      <div className="flex">
-        <div className="bg-background items-end h-screen w-[44%]">
+      <div className="flex min-h-screen min-w-[950px]">
+        <div className="bg-background items-end overflow-auto w-[44%]">
           <div className=" text-center flex flex-col justify-center items-center mt-[150px]">
             <p className=" text-7xl font-bold">RentEase!!!</p>
             <div className="mt-10 w-[45%]">
@@ -15,7 +15,7 @@ function SignUp() {
             </div>
           </div>
         </div>
-        <div className="bg-white h-screen w-[56%] ">
+        <div className="bg-white w-[56%] ">
           <div className="text-left mt-[100px] ml-[200px]">
             <p className=" text-4xl font-bold">Begin Your Journey</p>
             <p className=" text-4xl font-bold">With RentEase!!!</p>
