@@ -5,7 +5,7 @@ import SignUp from "./signup";
 function SignIn() {
   return (
     <>
-      <div className="flex min-h-screen min-w-[950px]">
+      <div className="flex min-h-screen min-w-[1024px]">
         <div className="bg-background items-end overflow-auto w-[44%]">
           <div className=" text-center flex flex-col justify-center items-center mt-[150px]">
             <p className=" text-7xl font-bold">RentEase!!!</p>

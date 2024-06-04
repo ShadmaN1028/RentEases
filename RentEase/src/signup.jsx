@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 function SignUp() {
   return (
     <>
-      <div className="flex min-h-screen min-w-[950px]">
+      <div className="flex min-h-screen min-w-[1024px]">
         <div className="bg-background items-end overflow-auto w-[44%]">
           <div className=" text-center flex flex-col justify-center items-center mt-[150px]">
             <p className=" text-7xl font-bold">RentEase!!!</p>
@@ -35,11 +35,11 @@ function SignUp() {
               className="inputf"
               placeholder="Confirm Password"
             />
-            <div className="flex flex-row  justify-between">
+            <div className="flex flex-row justify-between">
               <select
                 name=""
                 id=""
-                className="h-[35px] w-[110px]  rounded-[20px] pl-3 pr-2 bg-background placeholder-black font-normal focus:ring-1 focus:ring-inset focus:ring-indigo-600 outline-none hover:ring-1 hover:ring-indigo-600 hover:ring-inset shadow-md hover:shadow-md  hover:shadow-slate-900/25"
+                className="h-[35px] w-[110px] appearance-none rounded-[20px] pl-3 pr-2 bg-background placeholder-black font-normal focus:ring-1 focus:ring-inset focus:ring-indigo-600 outline-none hover:ring-1 hover:ring-indigo-600 hover:ring-inset drop-shadow-md hover:shadow-md  hover:shadow-slate-900/25"
               >
                 <option hidden>User Type</option>
                 <option>Owner</option>
