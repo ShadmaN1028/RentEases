@@ -1,6 +1,6 @@
 import React from 'react'
 
-function editPostingApartment() {
+function EditPostingApartment() {
   return (    <>
     <div className="mx-auto px-4 py-8 min-h-screen min-w-[1024px]">
       <div className="flex flex-col justify-center items-center">
@@ -102,4 +102,4 @@ function editPostingApartment() {
 );
 }
 
-export default editPostingApartment
+export default EditPostingApartment
