@@ -24,7 +24,10 @@ function SignUp() {
             action=""
             className="justify-left flex flex-col space-y-[20px] mt-[60px] ml-[200px] w-[325px] "
           >
-            <input type="text" className="inputf" placeholder="Name" />
+            <div className="flex flex-row justify-between">
+              <input type="text" className="h-[35px] w-[157px] rounded-[20px] px-3 bg-background placeholder-black font-normal focus:ring-1 focus:ring-inset focus:ring-indigo-600 outline-none hover:ring-1 hover:ring-indigo-600 hover:ring-inset shadow-md hover:shadow-md hover:shadow-slate-900/25" placeholder="Firstname"/>
+              <input type="text" className="h-[35px] w-[157px] rounded-[20px] px-3 bg-background placeholder-black font-normal focus:ring-1 focus:ring-inset focus:ring-indigo-600 outline-none hover:ring-1 hover:ring-indigo-600 hover:ring-inset shadow-md hover:shadow-md hover:shadow-slate-900/25" placeholder="Surname"/>
+            </div>
 
             <input type="Email" className="inputf" placeholder="Email" />
 
