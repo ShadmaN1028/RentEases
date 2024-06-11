@@ -1,4 +1,5 @@
 import React from "react";
+import img from './assets/owner.png'
 
 function OwnerDash() {
   return (
@@ -6,7 +7,7 @@ function OwnerDash() {
       <div className="flex flex-col min-h-screen min-w-[1024px]">
         <div className="flex flex-col justify-center items-center">
           <img
-            src="./assets/owner.png"
+            src={img}
             className="h-[300px] w-[300px] rounded-[50%]"
             alt=""
           />

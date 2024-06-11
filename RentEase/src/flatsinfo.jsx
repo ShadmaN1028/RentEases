@@ -1,11 +1,12 @@
 import React from 'react'
+import img from './assets/owner.png'
 
 function FlatsInfo() {
   return (
     <>
     <div className="flex flex-col min-h-screen min-w-[1024px]">
       <div className='flex flex-col justify-center items-center'>
-        <img src= "./assets/owner.png" className="h-[300px] w-[300px] rounded-[50%]" alt="" />
+        <img src= {img} className="h-[300px] w-[300px] rounded-[50%]" alt="" />
             <h1 className="text-3xl font-bold mb-6">Miss Chanandler Bong</h1>
       </div>
       <div className='flex flex-row justify-evenly'>
