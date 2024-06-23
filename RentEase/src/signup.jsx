@@ -1,8 +1,37 @@
-import React from "react";
-import SignIn from "./signin";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 function SignUp() {
+  const [firstName, setFirstName] = useState("");
+  const [surName, setSurName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [userType, setUserType] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setMessage("");
+
+    try {
+      const response = await fetch("http://localhost:8080/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ firstName, surName, email, password, userType }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setMessage("User created successfully");
+      } else {
+        setMessage(data.message || "Registration failed");
+      }
+    } catch (error) {
+      setMessage("Error: " + error.message);
+    }
+  };
+
   return (
     <>
       <div className="flex min-h-screen min-w-[1024px]">
@@ -21,17 +50,45 @@ function SignUp() {
             <p className=" text-4xl font-bold">With RentEase!!!</p>
           </div>
           <form
-            action=""
+            onSubmit={handleSubmit}
             className="justify-left flex flex-col space-y-[20px] mt-[60px] ml-[200px] w-[325px] "
           >
             <div className="flex flex-row justify-between">
-              <input type="text" className="h-[35px] w-[157px] rounded-[20px] px-3 bg-background placeholder-black font-normal focus:ring-1 focus:ring-inset focus:ring-indigo-600 outline-none hover:ring-1 hover:ring-indigo-600 hover:ring-inset shadow-md hover:shadow-md hover:shadow-slate-900/25" placeholder="Firstname"/>
-              <input type="text" className="h-[35px] w-[157px] rounded-[20px] px-3 bg-background placeholder-black font-normal focus:ring-1 focus:ring-inset focus:ring-indigo-600 outline-none hover:ring-1 hover:ring-indigo-600 hover:ring-inset shadow-md hover:shadow-md hover:shadow-slate-900/25" placeholder="Surname"/>
+              <input
+                type="text"
+                className="h-[35px] w-[157px] rounded-[20px] px-3 bg-background placeholder-black font-normal focus:ring-1 focus:ring-inset focus:ring-indigo-600 outline-none hover:ring-1 hover:ring-indigo-600 hover:ring-inset shadow-md hover:shadow-md hover:shadow-slate-900/25"
+                placeholder="Firstname"
+                required
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+              <input
+                type="text"
+                className="h-[35px] w-[157px] rounded-[20px] px-3 bg-background placeholder-black font-normal focus:ring-1 focus:ring-inset focus:ring-indigo-600 outline-none hover:ring-1 hover:ring-indigo-600 hover:ring-inset shadow-md hover:shadow-md hover:shadow-slate-900/25"
+                placeholder="Surname"
+                required
+                value={surName}
+                onChange={(e) => setSurName(e.target.value)}
+              />
             </div>
 
-            <input type="Email" className="inputf" placeholder="Email" />
+            <input
+              type="Email"
+              className="inputf"
+              placeholder="Email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
 
-            <input type="password" className="inputf" placeholder="Password" />
+            <input
+              type="password"
+              className="inputf"
+              placeholder="Password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
             <input
               type="password"
@@ -40,13 +97,13 @@ function SignUp() {
             />
             <div className="flex flex-row justify-between">
               <select
-                name=""
-                id=""
+                value={userType}
+                onChange={(e) => setUserType(e.target.value)}
                 className="h-[35px] w-[110px] rounded-[20px] pl-3 pr-2 bg-background placeholder-black font-normal focus:ring-1 focus:ring-inset focus:ring-indigo-600 outline-none hover:ring-1 hover:ring-indigo-600 hover:ring-inset drop-shadow-md hover:shadow-md  hover:shadow-slate-900/25"
               >
                 <option hidden>User Type</option>
-                <option>Owner</option>
-                <option>Tenant</option>
+                <option value="owner">Owner</option>
+                <option value="tenant">Tenant</option>
               </select>
               <input
                 type="text"
@@ -60,7 +117,7 @@ function SignUp() {
               />
             </div>
             <input
-              type="button"
+              type="submit"
               value="Sign Up"
               className=" h-[35px] w-[325px]  rounded-[20px] bg-black px-3 text-white shadow-md cursor-pointer focus-visible:outline hover:bg-black/80 hover:shadow-md hover:shadow-slate-900/25"
             />
@@ -76,6 +133,11 @@ function SignUp() {
               </Link>
             </div>
           </form>
+          {message && (
+            <div className="absolute bottom-10 bg-white/50 rounded-[20px] p-5">
+              {message}
+            </div>
+          )}
         </div>
       </div>
     </>
