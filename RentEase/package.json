@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@elysiajs/cors": "^1.0.2",
+    "bcrypt": "^5.1.1",
     "elysia": "^1.0.25",
     "mysql2": "^3.10.1",
     "react": "^18.2.0",
