@@ -1,44 +1,110 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import SignUp from "./signup";
-
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import toast from "react-hot-toast";
 function SignIn() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:8080/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      if (data.status === "success") {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.getItem("user");
+        localStorage.getItem("token");
+        toast.success("Login Successful", {
+          style: {
+            border: "1px solid #49c41e",
+            padding: "16px",
+            color: "white",
+            backgroundColor: "#49c41e",
+          },
+          iconTheme: {
+            primary: "white",
+            secondary: "#49c41e",
+          },
+        });
+        navigate("/owner_dash");
+      } else {
+        toast.error(data.message || "Login failed", {
+          style: {
+            border: "1px solid red",
+            padding: "16px",
+            color: "white",
+            backgroundColor: "red",
+          },
+          iconTheme: {
+            primary: "white",
+            secondary: "red",
+          },
+        });
+
+        return { status: "error", message: data.message };
+      }
+    } catch (err) {
+      return { status: "error", message: err.message };
+    }
+  };
+
   return (
     <>
       <div className="flex min-h-screen min-w-[1024px]">
-        <div className="bg-background items-end overflow-auto w-[44%]">
-          <div className=" text-center flex flex-col justify-center items-center mt-[150px]">
-            <p className=" text-7xl font-bold">RentEase!!!</p>
+        <div className="w-[44%] items-end overflow-auto bg-background">
+          <div className="mt-[150px] flex flex-col items-center justify-center text-center">
+            <p className="text-7xl font-bold">RentEase!!!</p>
             <div className="mt-10 w-[45%]">
-              <p className="text-xl text-left">Find Your Home,</p>
-              <p className="text-xl text-right">Simplify Your Life</p>
+              <p className="text-left text-xl">Find Your Home,</p>
+              <p className="text-right text-xl">Simplify Your Life</p>
             </div>
           </div>
         </div>
-        <div className="bg-white w-[56%] ">
-          <div className="text-left mt-[100px] ml-[200px]">
-            <p className=" text-4xl font-bold">Continue Your Journey</p>
-            <p className=" text-4xl font-bold">With RentEase!!!</p>
+        <div className="w-[56%] bg-white">
+          <div className="ml-[200px] mt-[100px] text-left">
+            <p className="text-4xl font-bold">Continue Your Journey</p>
+            <p className="text-4xl font-bold">With RentEase!!!</p>
           </div>
           <form
-            action=""
-            className="justify-left flex flex-col space-y-[20px] mt-[60px] ml-[200px] w-[325px] "
+            onSubmit={handleSubmit}
+            className="justify-left ml-[200px] mt-[60px] flex w-[325px] flex-col space-y-[20px]"
           >
-            <input type="Email" className="inputf" placeholder="Email" />
-
-            <input type="password" className="inputf" placeholder="Password" />
             <input
-              type="button"
-              value="Sign In"
-              className=" h-[35px] w-[325px]  rounded-[20px] bg-button px-3 text-white shadow-md hover:shadow-md hover:shadow-slate-900/25 cursor-pointer focus-visible:outline hover:bg-button/85"
+              type="Email"
+              className="inputf"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
-            <div className="flex flex-row  justify-between">
-              <p className="text-md font-semibold py-1">
+
+            <input
+              type="password"
+              className="inputf"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <input
+              type="submit"
+              value="Sign In"
+              className="h-[35px] w-[325px] cursor-pointer rounded-[20px] bg-button px-3 text-white shadow-md hover:bg-button/85 hover:shadow-md hover:shadow-slate-900/25 focus-visible:outline"
+            />
+            <div className="flex flex-row justify-between">
+              <p className="text-md py-1 font-semibold">
                 Don't Have An Account ?
               </p>
               <Link
                 to={"/signup"}
-                className=" h-[35px] w-[115px] py-1 rounded-[20px] bg-black text-center text-white shadow-md cursor-pointer focus-visible:outline hover:bg-black/80 hover:shadow-md hover:shadow-slate-900/25"
+                className="h-[35px] w-[115px] cursor-pointer rounded-[20px] bg-black py-1 text-center text-white shadow-md hover:bg-black/80 hover:shadow-md hover:shadow-slate-900/25 focus-visible:outline"
               >
                 Sign Up
               </Link>
