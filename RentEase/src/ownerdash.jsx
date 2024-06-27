@@ -1,15 +1,22 @@
 import LogoutButton from "./logoutButton";
-
+import React, { useEffect, useState } from "react";
 import img from "./assets/owner.png";
-
+import { useNavigate } from "react-router-dom";
 function OwnerDash() {
+  const [users, setUsers] = useState("");
+  const navigate = useNavigate();
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    setUsers(userData);
+  });
+
   return (
     <>
       <LogoutButton />
       <div className="flex min-h-screen min-w-[1024px] flex-col">
         <div className="flex flex-col items-center justify-center">
           <img src={img} className="h-[300px] w-[300px] rounded-[50%]" alt="" />
-          <h1 className="mb-6 text-3xl font-bold"></h1>
+          <h1 className="mb-6 text-3xl font-bold">{users.surname}</h1>
         </div>
         <div className="flex flex-row justify-evenly">
           <div className="ml-[50px] flex h-auto w-[400px] cursor-pointer flex-col items-center space-y-[20px] rounded-[20px] bg-background px-3 py-[30px] shadow-md hover:shadow-md hover:shadow-slate-900/25 focus-visible:outline">

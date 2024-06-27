@@ -76,6 +76,7 @@ app.post("/signin", async (ctx) => {
       user: {
         firstname: user.firstname,
         surname: user.surname,
+        user_type: user.user_type,
       },
     };
   } catch (err) {

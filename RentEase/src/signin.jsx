@@ -21,8 +21,7 @@ function SignIn() {
       if (data.status === "success") {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.getItem("user");
-        localStorage.getItem("token");
+
         toast.success("Login Successful", {
           style: {
             border: "1px solid #49c41e",
@@ -35,7 +34,10 @@ function SignIn() {
             secondary: "#49c41e",
           },
         });
-        navigate("/owner_dash");
+        if (data.user.user_type === "owner") navigate("/owner_dash");
+        else {
+          navigate("/users");
+        }
       } else {
         toast.error(data.message || "Login failed", {
           style: {
