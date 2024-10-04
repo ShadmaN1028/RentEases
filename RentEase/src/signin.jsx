@@ -1,14 +1,14 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-function SignIn() {
+
+export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-
+    e.preventDefault(); // Prevents the default form submission
     try {
       const response = await fetch("http://localhost:8080/signin", {
         method: "POST",
@@ -18,104 +18,72 @@ function SignIn() {
         body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
-      if (data.status === "success") {
+      if (response.ok) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
-
-        toast.success("Login Successful", {
-          style: {
-            border: "1px solid #49c41e",
-            padding: "16px",
-            color: "white",
-            backgroundColor: "#49c41e",
-          },
-          iconTheme: {
-            primary: "white",
-            secondary: "#49c41e",
-          },
-        });
-        if (data.user.user_type === "owner") navigate("/owner_dash");
-        else {
-          navigate("/users");
-        }
+        toast.success("Signed in successfully");
+        navigate(data.user.userType === "owner" ? "/owner-dashboard" : "/tenant-dashboard");
       } else {
-        toast.error(data.message || "Login failed", {
-          style: {
-            border: "1px solid red",
-            padding: "16px",
-            color: "white",
-            backgroundColor: "red",
-          },
-          iconTheme: {
-            primary: "white",
-            secondary: "red",
-          },
-        });
-
-        return { status: "error", message: data.message };
+        toast.error(data.message || "Sign in failed");
       }
-    } catch (err) {
-      return { status: "error", message: err.message };
+    } catch (error) {
+      toast.error("Error signing in");
     }
   };
 
   return (
-    <>
-      <div className="flex min-h-screen min-w-[1024px]">
-        <div className="w-[44%] items-end overflow-auto bg-background">
-          <div className="mt-[150px] flex flex-col items-center justify-center text-center">
-            <p className="text-7xl font-bold">RentEase!!!</p>
-            <div className="mt-10 w-[45%]">
-              <p className="text-left text-xl">Find Your Home,</p>
-              <p className="text-right text-xl">Simplify Your Life</p>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
+        </div>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <input type="hidden" name="remember" value="true" />
+          <div className="rounded-md shadow-sm -space-y-px">
+            <div>
+              <label htmlFor="email-address" className="sr-only">
+                Email address
+              </label>
+              <input
+                id="email-address"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="sr-only">
+                Password
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
           </div>
-        </div>
-        <div className="w-[56%] bg-white">
-          <div className="ml-[200px] mt-[100px] text-left">
-            <p className="text-4xl font-bold">Continue Your Journey</p>
-            <p className="text-4xl font-bold">With RentEase!!!</p>
-          </div>
-          <form
-            onSubmit={handleSubmit}
-            className="justify-left ml-[200px] mt-[60px] flex w-[325px] flex-col space-y-[20px]"
-          >
-            <input
-              type="Email"
-              className="inputf"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
 
-            <input
-              type="password"
-              className="inputf"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <input
+          <div>
+            <button
               type="submit"
-              value="Sign In"
-              className="h-[35px] w-[325px] cursor-pointer rounded-[20px] bg-button px-3 text-white shadow-md hover:bg-button/85 hover:shadow-md hover:shadow-slate-900/25 focus-visible:outline"
-            />
-            <div className="flex flex-row justify-between">
-              <p className="text-md py-1 font-semibold">
-                Don't Have An Account ?
-              </p>
-              <Link
-                to={"/signup"}
-                className="h-[35px] w-[115px] cursor-pointer rounded-[20px] bg-black py-1 text-center text-white shadow-md hover:bg-black/80 hover:shadow-md hover:shadow-slate-900/25 focus-visible:outline"
-              >
-                Sign Up
-              </Link>
-            </div>
-          </form>
-        </div>
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Sign in
+            </button>
+          </div>
+        </form>
       </div>
-    </>
+    </div>
   );
 }
-
-export default SignIn;

@@ -1,61 +1,122 @@
-import LogoutButton from "./logoutButton";
-import React, { useEffect, useState } from "react";
-import img from "./assets/owner.png";
-import { useNavigate } from "react-router-dom";
-function OwnerDash() {
-  const [users, setUsers] = useState("");
-  const navigate = useNavigate();
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+
+// interface Building {
+//   id: number;
+//   name: string;
+//   address: string;
+// }
+
+// interface Flat {
+//   id: number;
+//   flat_number: string;
+//   status: string;
+//   rent_amount: number;
+// }
+
+export default function OwnerDashboard() {
+  const [buildings, setBuildings] = useState ();
+  const [selectedBuilding, setSelectedBuilding] = useState();
+  const [flats, setFlats] = useState();
+
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    setUsers(userData);
-  });
+    fetchBuildings();
+  }, []);
+
+  const fetchBuildings = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/owner/buildings", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setBuildings(data);
+      } else {
+        toast.error("Error fetching buildings");
+      }
+    } catch (error) {
+      toast.error("Error fetching buildings");
+    }
+  };
+
+  const fetchFlats = async (buildingId) => {
+    try {
+      const response = await fetch(`http://localhost:8080/owner/flats/${buildingId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setFlats(data);
+      } else {
+        toast.error("Error fetching flats");
+      }
+    } catch (error) {
+      toast.error("Error fetching flats");
+    }
+  };
+
+  const handleBuildingSelect = (buildingId) => {
+    setSelectedBuilding(buildingId);
+    fetchFlats(buildingId);
+  };
 
   return (
-    <>
-      <LogoutButton />
-      <div className="flex min-h-screen min-w-[1024px] flex-col">
-        <div className="flex flex-col items-center justify-center">
-          <img src={img} className="h-[300px] w-[300px] rounded-[50%]" alt="" />
-          <h1 className="mb-6 text-3xl font-bold">{users.surname}</h1>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6">Owner Dashboard</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h2 className="text-2xl font-semibold mb-4">Your Buildings</h2>
+          {buildings.map((building) => (
+            <div
+              key={building.id}
+              className="bg-white shadow-md rounded-lg p-4 mb-4 cursor-pointer"
+              onClick={() => handleBuildingSelect(building.id)}
+            >
+              <h3 className="text-xl font-semibold">{building.name}</h3>
+              <p>{building.address}</p>
+            </div>
+          ))}
+          <Link
+            to="/post-building"
+            className="block mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-center"
+          >
+            Add New Building
+          </Link>
         </div>
-        <div className="flex flex-row justify-evenly">
-          <div className="ml-[50px] flex h-auto w-[400px] cursor-pointer flex-col items-center space-y-[20px] rounded-[20px] bg-background px-3 py-[30px] shadow-md hover:shadow-md hover:shadow-slate-900/25 focus-visible:outline">
-            <p className="text-center text-xl font-bold">House name</p>
-            <div className="mx-[70px] mb-[20px] flex flex-col items-center space-y-[20px]">
-              <p className="flex flex-col text-center">
-                Address: House#191/1 Road#02, Talaimari, Kazla, Rajshahi
-              </p>
-              <p>Total No of Flats: 2</p>
-            </div>
-            <p className="text-xl font-semibold">Unique ID: 5338048</p>
-            <input
-              type="button"
-              value="Details"
-              className="h-[40px] w-[120px] cursor-pointer rounded-[20px] bg-button px-3 text-white shadow-md hover:bg-button/85 hover:shadow-md hover:shadow-slate-900/25 focus-visible:outline"
-            />
-          </div>
-          <div className="ml-[50px] flex h-auto w-[400px] cursor-pointer flex-col items-center space-y-[20px] rounded-[20px] bg-background px-3 py-[30px] shadow-md hover:shadow-md hover:shadow-slate-900/25 focus-visible:outline">
-            <p className="text-center text-xl font-bold">House name</p>
-            <div className="mx-[70px] mb-[20px] flex flex-col items-center space-y-[20px]">
-              <p className="flex flex-col text-center">
-                Address: House#192/1 Road#02, Talaimari, Kazla, Rajshahi
-              </p>
-              <p>Total No of Flats: 5</p>
-            </div>
-            <p className="text-xl font-semibold">Unique ID: 5338049</p>
-            <input
-              type="button"
-              value="Details"
-              className="h-[40px] w-[120px] cursor-pointer rounded-[20px] bg-button px-3 text-white shadow-md hover:bg-button/85 hover:shadow-md hover:shadow-slate-900/25 focus-visible:outline"
-            />
-          </div>
-          <div className="ml-[50px] flex h-auto w-[400px] cursor-pointer flex-col items-center space-y-[20px] rounded-[20px] bg-background py-[30px] shadow-md hover:shadow-md hover:shadow-slate-900/25 focus-visible:outline">
-            <h6 className="justify-end text-[30px] font-bold">Register</h6>
-          </div>
+        <div>
+          <h2 className="text-2xl font-semibold mb-4">Flats</h2>
+          {selectedBuilding ? (
+            flats.map((flat) => (
+              <div key={flat.id} className="bg-white shadow-md rounded-lg p-4 mb-4">
+                <h3 className="text-xl font-semibold">{flat.flat_number}</h3>
+                <p>Status: {flat.status}</p>
+                <p>Rent: ${flat.rent_amount}</p>
+                <Link
+                  to={`/edit-flat/${flat.id}`}
+                  className="mt-2 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  Edit Flat
+                </Link>
+              </div>
+            ))
+          ) : (
+            <p>Select a building to view its flats</p>
+          )}
+          {selectedBuilding && (
+            <Link
+              to={`/post-flat/${selectedBuilding}`}
+              className="block mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-center"
+            >
+              Add New Flat
+            </Link>
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
-
-export default OwnerDash;
