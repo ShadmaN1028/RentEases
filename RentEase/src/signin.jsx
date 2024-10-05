@@ -22,7 +22,7 @@ export default function SignIn() {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
         toast.success("Signed in successfully");
-        navigate(data.user.userType === "owner" ? "/owner-dashboard" : "/tenant-dashboard");
+        navigate(data.user.userType === "owner" ? "/owner_dash" : "/tenant_dash");
       } else {
         toast.error(data.message || "Sign in failed");
       }

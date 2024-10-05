@@ -2,23 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
-// interface Building {
-//   id: number;
-//   name: string;
-//   address: string;
-// }
-
-// interface Flat {
-//   id: number;
-//   flat_number: string;
-//   status: string;
-//   rent_amount: number;
-// }
-
 export default function OwnerDashboard() {
-  const [buildings, setBuildings] = useState ();
-  const [selectedBuilding, setSelectedBuilding] = useState();
-  const [flats, setFlats] = useState();
+  const [buildings, setBuildings] = useState([]);
+  const [selectedBuilding, setSelectedBuilding] = useState(null);
+  const [flats, setFlats] = useState([]);
 
   useEffect(() => {
     fetchBuildings();
@@ -82,7 +69,7 @@ export default function OwnerDashboard() {
             </div>
           ))}
           <Link
-            to="/post-building"
+            to="/post_building"
             className="block mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-center"
           >
             Add New Building
@@ -109,7 +96,7 @@ export default function OwnerDashboard() {
           )}
           {selectedBuilding && (
             <Link
-              to={`/post-flat/${selectedBuilding}`}
+              to={`/post_flat/${selectedBuilding}`}
               className="block mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-center"
             >
               Add New Flat

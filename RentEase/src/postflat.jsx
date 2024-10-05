@@ -39,7 +39,7 @@ export default function PostFlat() {
       const data = await response.json();
       if (response.ok) {
         toast.success('Flat created successfully');
-        navigate('/owner-dashboard');
+        navigate('/owner_dash');
       } else {
         toast.error(data.message || 'Error creating flat');
       }

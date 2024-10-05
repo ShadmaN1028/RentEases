@@ -24,6 +24,7 @@ const pool = mysql.createPool({
   queueLimit: 0
 });
 
+const JWT_SECRET_KEY = "Ii2Tz7ZRT1LGuLydjYy5xugg7y3x5BxonSrU0uRu47m2wEx1vnDRiBjJVG06V+Wm24uYdOs6R1ymg+v4"
 // Middleware for authentication
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
@@ -31,7 +32,7 @@ const authenticateToken = (req, res, next) => {
 
   if (token == null) return res.sendStatus(401);
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+  jwt.verify(token, JWT_SECRET_KEY, (err, user) => {
     if (err) return res.sendStatus(403);
     req.user = user;
     next();
@@ -65,7 +66,7 @@ app.post('/signin', async (req, res) => {
     if (!validPassword) {
       return res.status(400).json({ message: 'Invalid password' });
     }
-    const token = jwt.sign({ id: user.id, email: user.email, userType: user.user_type }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: user.id, email: user.email, userType: user.user_type }, JWT_SECRET_KEY);
     res.json({ token, user: { id: user.id, email: user.email, userType: user.user_type } });
   } catch (error) {
     res.status(500).json({ message: 'Error signing in', error: error.message });
@@ -216,5 +217,5 @@ cron.schedule('0 0 * * *', async () => {
   }
 });
 
-const PORT = process.env.PORT || 8080;
+const PORT = 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

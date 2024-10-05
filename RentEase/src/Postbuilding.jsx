@@ -21,7 +21,7 @@ export default function PostBuilding() {
       const data = await response.json();
       if (response.ok) {
         toast.success('Building created successfully');
-        navigate('/owner-dashboard');
+        navigate('/owner_dash');
       } else {
         toast.error(data.message || 'Error creating building');
       }
