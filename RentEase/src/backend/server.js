@@ -73,6 +73,12 @@ app.post('/signin', async (req, res) => {
   }
 });
 
+app.post('/logout', authenticateToken, (req, res) => {
+
+
+  res.json({ message: 'Logout successful' });
+});
+
 // Owner routes
 app.post('/buildings', authenticateToken, async (req, res) => {
   try {
@@ -175,6 +181,46 @@ app.get('/notifications', authenticateToken, async (req, res) => {
     res.json(notifications);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching notifications', error: error.message });
+  }
+});
+
+
+// Add this route to your existing Express.js backend file
+
+app.get('/flats/:id', authenticateToken, async (req, res) => {
+  try {
+    const [flats] = await pool.query('SELECT * FROM flats WHERE id = ?', [req.params.id]);
+    if (flats.length === 0) {
+      return res.status(404).json({ message: 'Flat not found' });
+    }
+    res.json(flats[0]);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching flat details', error: error.message });
+  }
+});
+
+app.post('/tenant/request-flat', authenticateToken, async (req, res) => {
+  try {
+    const { flatId, startDate, endDate } = req.body;
+    
+    // Check if the flat is still available
+    const [flats] = await pool.query('SELECT * FROM flats WHERE id = ? AND status = "vacant"', [flatId]);
+    if (flats.length === 0) {
+      return res.status(400).json({ message: 'Flat is no longer available' });
+    }
+
+    // Create a new tenancy
+    const [result] = await pool.query(
+      'INSERT INTO tenancies (flat_id, tenant_id, start_date, end_date) VALUES (?, ?, ?, ?)',
+      [flatId, req.user.id, startDate, endDate]
+    );
+
+    // Update the flat status to occupied
+    await pool.query('UPDATE flats SET status = "occupied" WHERE id = ?', [flatId]);
+
+    res.status(201).json({ message: 'Flat requested successfully', tenancyId: result.insertId });
+  } catch (error) {
+    res.status(500).json({ message: 'Error requesting flat', error: error.message });
   }
 });
 

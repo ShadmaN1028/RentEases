@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
+import LogoutButton from "./logoutButton";
 
 export default function OwnerDashboard() {
   const [buildings, setBuildings] = useState([]);
@@ -104,6 +105,7 @@ export default function OwnerDashboard() {
           )}
         </div>
       </div>
+      <LogoutButton/>
     </div>
   );
 }

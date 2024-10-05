@@ -35,8 +35,8 @@ function App() {
           <Route path="/users" element={<UsersList />} />
           <Route path="/tenant_dash" element={<TenantDashboard />} />
           <Route path="/post_building" element={<PostBuilding />} />
-          <Route path="/post_flat" element={<PostFlat />} />
-          <Route path="/req_flat" element={<RequestFlat />} />
+          <Route path="/post_flat/:buildingId" element={<PostFlat />} />
+          <Route path="/req_flat/:id" element={<RequestFlat />} />
           <Route path="/req_ser" element={<ServiceRequest />} />
           <Route path="/payment" element={<Payments />} />
           <Route path="/owner_notf" element={<OwnerNotifications />} />

@@ -15,7 +15,7 @@ export default function ServiceRequest() {
 
   const fetchTenantFlats = async () => {
     try {
-      const response = await fetch('http://localhost:8080/tenant/flats', {
+      const response = await fetch('http://localhost:8080/tenant/service-request', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },

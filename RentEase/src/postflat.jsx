@@ -28,7 +28,7 @@ export default function PostFlat() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8080/flats', {
+      const response = await fetch(`http://localhost:8080/flats`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
