@@ -2,23 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
-interface Flat {
-  id: number;
-  flat_number: string;
-  area: number;
-  rooms: number;
-  rent_amount: number;
-}
-
-interface Notification {
-  id: number;
-  message: string;
-  created_at: string;
-}
-
-export default function TenantDashboard() {
-  const [flats, setFlats] = useState<Flat[]>([]);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+const TenantDashboard = () => {
+  const [flats, setFlats] = useState([]);
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     fetchAvailableFlats();
@@ -102,4 +88,6 @@ export default function TenantDashboard() {
       </div>
     </div>
   );
-}
+};
+
+export default TenantDashboard;
