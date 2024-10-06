@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
+import LogoutButton from "./logoutButton";
 
 const TenantDashboard = () => {
   const [flats, setFlats] = useState([]);
   const [notifications, setNotifications] = useState([]);
+  const [joinCode, setJoinCode] = useState("");
 
   useEffect(() => {
-    fetchAvailableFlats();
+    fetchTenantFlats();
     fetchNotifications();
   }, []);
 
-  const fetchAvailableFlats = async () => {
+  const fetchTenantFlats = async () => {
     try {
-      const response = await fetch("http://localhost:8080/tenant/available-flats", {
+      const response = await fetch("http://localhost:8080/tenant/flats", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -22,10 +24,10 @@ const TenantDashboard = () => {
         const data = await response.json();
         setFlats(data);
       } else {
-        toast.error("Error fetching available flats");
+        toast.error("Error fetching tenant flats");
       }
     } catch (error) {
-      toast.error("Error fetching available flats");
+      toast.error("Error fetching tenant flats");
     }
   };
 
@@ -47,33 +49,81 @@ const TenantDashboard = () => {
     }
   };
 
+  const handleJoinFlat = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:8080/flats/join", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ code: joinCode }),
+      });
+      if (response.ok) {
+        toast.success("Successfully joined flat");
+        fetchTenantFlats();
+        setJoinCode("");
+      } else {
+        const data = await response.json();
+        toast.error(data.message || "Error joining flat");
+      }
+    } catch (error) {
+      toast.error("Error joining flat");
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Tenant Dashboard</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <h1 className="mb-6 text-3xl font-bold">Tenant Dashboard</h1>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div>
-          <h2 className="text-2xl font-semibold mb-4">Available Flats</h2>
+          <h2 className="mb-4 text-2xl font-semibold">Your Flats</h2>
           {flats.map((flat) => (
-            <div key={flat.id} className="bg-white shadow-md rounded-lg p-4 mb-4">
+            <div
+              key={flat.id}
+              className="mb-4 rounded-lg bg-white p-4 shadow-md"
+            >
               <h3 className="text-xl font-semibold">{flat.flat_number}</h3>
+              <p>Building: {flat.building_name}</p>
+              <p>Address: {flat.address}</p>
               <p>Area: {flat.area} sqft</p>
               <p>Rooms: {flat.rooms}</p>
               <p>Rent: ${flat.rent_amount}</p>
-              <Link
-                to={`/req_flat/${flat.id}`}
-                className="mt-2 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              >
-                Request Flat
-              </Link>
+              <h4 className="mt-2 font-semibold">Owner Details:</h4>
+              <p>
+                Name: {flat.first_name} {flat.surname}
+              </p>
+              <p>Email: {flat.email}</p>
             </div>
           ))}
+          <form onSubmit={handleJoinFlat} className="mt-4">
+            <input
+              type="text"
+              value={joinCode}
+              onChange={(e) => setJoinCode(e.target.value)}
+              placeholder="Enter flat code"
+              className="mr-2 rounded border px-2 py-1"
+            />
+            <button
+              type="submit"
+              className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+            >
+              Join Flat
+            </button>
+          </form>
         </div>
         <div>
-          <h2 className="text-2xl font-semibold mb-4">Notifications</h2>
+          <h2 className="mb-4 text-2xl font-semibold">Notifications</h2>
           {notifications.map((notification) => (
-            <div key={notification.id} className="bg-white shadow-md rounded-lg p-4 mb-4">
+            <div
+              key={notification.id}
+              className="mb-4 rounded-lg bg-white p-4 shadow-md"
+            >
               <p>{notification.message}</p>
-              <p className="text-sm text-gray-500">{new Date(notification.created_at).toLocaleString()}</p>
+              <p className="text-sm text-gray-500">
+                {new Date(notification.created_at).toLocaleString()}
+              </p>
             </div>
           ))}
         </div>
@@ -81,11 +131,12 @@ const TenantDashboard = () => {
       <div className="mt-8">
         <Link
           to="/service-request"
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          className="rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700"
         >
           Submit Service Request
         </Link>
       </div>
+      <LogoutButton />
     </div>
   );
 };
