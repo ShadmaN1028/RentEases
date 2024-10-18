@@ -16,7 +16,7 @@ export default function ServiceRequest() {
   const fetchTenantFlats = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/tenant/service-request",
+        "http://localhost:8080/ser",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -84,7 +84,7 @@ export default function ServiceRequest() {
           >
             <option value="">Select a flat</option>
             {flats.map((flat) => (
-              <option key={flat.id} value={flat.id}>
+              <option key={flat.flat_number} value={flat.flat_number}>
                 {flat.flat_number}
               </option>
             ))}

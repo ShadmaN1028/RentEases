@@ -13,7 +13,7 @@ const PaymentStatus = () => {
         const storedUserType = localStorage.getItem('userType');
         setUserType(storedUserType);
 
-        const response = await fetch('http://localhost:8080/payments', {
+        const response = await fetch('http://localhost:8080/payment-stat', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
@@ -81,8 +81,8 @@ const PaymentStatus = () => {
                   <td className="py-2 px-4 border-b">{formatDate(payment.payment_date)}</td>
                   {userType === 'owner' && <td className="py-2 px-4 border-b">{payment.tenant_name}</td>}
                   {userType === 'tenant' && <td className="py-2 px-4 border-b">{payment.owner_name}</td>}
-                  <td className="py-2 px-4 border-b">{payment.flat_number}</td>
-                  <td className="py-2 px-4 border-b">${payment.amount.toFixed(2)}</td>
+                  <td className="py-2 px-4 border-b">{payment.flat_id}</td>
+                  <td className="py-2 px-4 border-b">${payment.amount}</td>
                   <td className={`py-2 px-4 border-b ${getStatusColor(payment.status)}`}>
                     {payment.status}
                   </td>

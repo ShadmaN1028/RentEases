@@ -458,5 +458,178 @@ app.get("/owner/tenancies", authenticateToken, async (req, res) => {
 });
 
 
+app.get("/payment-stat", async (req, res) => {
+  try {
+    const [payments] = await pool.query(
+      
+      `SELECT f.tenancy_id, f.amount, f.payment_date, f.payment_type, f.status, t.flat_id
+      from tenancies t
+      join payments f on t.tenant_id = f.tenancy_id
+      order by t.flat_id ASC`
+    
+
+    );
+    res.json(payments);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching tenant flats", error: error.message });
+  }
+});
+
+
+app.get("/ser", async (req, res) => {
+  try {
+    const [flats] = await pool.query(
+      
+      `SELECT flat_number from flats
+      `
+    
+
+    );
+    res.json(flats);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching tenant flats", error: error.message });
+  }
+});
+
+app.get("/owner/service-request", authenticateToken, async (req, res) => {
+  try {
+
+    const [result] = await pool.query(
+      "SELECT * FROM service_requests WHERE tenant_id = ?",
+      [req.user.id],
+    );
+    res.status(201).json({
+      message: "Service request shown successfully",
+      request: result
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error creating service request",
+      error: error.message,
+    });
+  }
+});
+
+
+
+// Get user information
+app.get("/user/info", authenticateToken, async (req, res) => {
+  try {
+    const [users] = await pool.query(
+      "SELECT id, first_name AS firstName, surname, email FROM users WHERE id = ?",
+      [req.user.id]
+    );
+    if (users.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json(users[0]);
+  } catch (error) {
+    console.error("Error fetching user information:", error);
+    res.status(500).json({ message: "Error fetching user information", error: error.message });
+  }
+});
+
+// Update user information
+app.put("/user/update", authenticateToken, async (req, res) => {
+  try {
+    const { firstName, surname, email } = req.body;
+    const [result] = await pool.query(
+      "UPDATE users SET first_name = ?, surname = ?, email = ?  WHERE id = ?",
+      [firstName, surname, email, req.user.id]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json({ message: "User information updated successfully" });
+  } catch (error) {
+    console.error("Error updating user information:", error);
+    res.status(500).json({ message: "Error updating user information", error: error.message });
+  }
+});
+
+// Change password
+app.put("/user/change-password", authenticateToken, async (req, res) => {
+  try {
+    const { newPassword } = req.body;
+    if (!newPassword) {
+      return res.status(400).json({ message: "New password is required" });
+    }
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const [result] = await pool.query(
+      "UPDATE users SET password = ? WHERE id = ?",
+      [hashedPassword, req.user.id]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json({ message: "Password changed successfully" });
+  } catch (error) {
+    console.error("Error changing password:", error);
+    res.status(500).json({ message: "Error changing password", error: error.message });
+  }
+});
+
+
+
+// Get owner information
+app.get("/owner/info", authenticateToken, async (req, res) => {
+  try {
+    const [owners] = await pool.query(
+      "SELECT id, CONCAT(first_name, ' ', surname) AS name, email FROM users WHERE id = ? AND user_type = 'owner'",
+      [req.user.id]
+    );
+    if (owners.length === 0) {
+      return res.status(404).json({ message: "Owner not found" });
+    }
+    res.json(owners[0]);
+  } catch (error) {
+    console.error("Error fetching owner information:", error);
+    res.status(500).json({ message: "Error fetching owner information", error: error.message });
+  }
+});
+
+// Get owner's flats with tenant information
+app.get("/owner/flats", authenticateToken, async (req, res) => {
+  try {
+    const [flats] = await pool.query(`
+      SELECT 
+        f.id, 
+        b.name AS buildingName, 
+        f.flat_number AS flatNumber,
+        CONCAT(u.first_name, ' ', u.surname) AS tenantName,
+        u.email AS tenantEmail,
+        CASE
+          WHEN p.status = 'paid' THEN 'Paid'
+          WHEN p.status = 'pending' THEN 'Unpaid'
+          ELSE 'N/A'
+        END AS paymentStatus
+      FROM flats f
+      JOIN buildings b ON f.building_id = b.id
+      LEFT JOIN tenancies t ON f.id = t.flat_id AND t.status = 'active'
+      LEFT JOIN users u ON t.tenant_id = u.id
+      LEFT JOIN (
+        SELECT tenancy_id, status
+        FROM payments
+        WHERE payment_date = (
+          SELECT MAX(payment_date)
+          FROM payments p2
+          WHERE p2.tenancy_id = payments.tenancy_id
+        )
+      ) p ON t.id = p.tenancy_id
+      WHERE b.owner_id = ?
+    `, [req.user.id]);
+    
+    res.json(flats);
+  } catch (error) {
+    console.error("Error fetching owner's flats:", error);
+    res.status(500).json({ message: "Error fetching owner's flats", error: error.message });
+  }
+});
+
+
 const PORT = 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

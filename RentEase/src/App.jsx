@@ -21,7 +21,7 @@ import ServiceRequestList from "./serreqlist";
 import ServiceRequestForm from "./serreqform";
 import PaymentStatus from "./paymentstat";
 import Navbar from "./navbar";
-
+import Settings from "./settings";
 
 function App() {
   return (
@@ -49,6 +49,7 @@ function App() {
           <Route path="/ser_req_list" element={<ServiceRequestList />} />
           <Route path="/ser_req_form" element={<ServiceRequestForm />} />
           <Route path="/payment_stat" element={<PaymentStatus />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </Router>
       <Toaster />

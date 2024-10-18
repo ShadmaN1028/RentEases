@@ -52,7 +52,7 @@ const Navbar = () => {
     { name: 'Make Payment', link: '/payment' },
     { name: 'Flats Info', link: '/flats_info' },
     { name: 'Add Service Request', link: '/req_ser' },
-    { name: 'Service Requests', link: '/service-requests' },
+    { name: 'Service Requests', link: '/ser_req_list' },
   ];
 
   const navItems = userType === 'owner' ? ownerNavItems : tenantNavItems;

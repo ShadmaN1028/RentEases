@@ -19,10 +19,10 @@ export default function ServiceRequestList() {
         const data = await response.json();
         setServiceRequests(data);
       } else {
-        toast.error('Error fetching service requests');
+        // toast.error('Error fetching service requests');
       }
     } catch (error) {
-      toast.error('Error fetching service requests');
+      // toast.error('Error fetching service requests');
     }
   };
 
