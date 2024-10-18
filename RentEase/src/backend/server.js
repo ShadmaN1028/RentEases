@@ -438,5 +438,25 @@ app.get("/owner/tenants", authenticateToken, async (req, res) => {
   }
 });
 
+app.get("/owner/tenancies", authenticateToken, async (req, res) => {
+  try {
+    const [tenancies] = await pool.query(
+      `SELECT t.id, f.flat_number, b.name as building_name, u.first_name, u.surname
+       FROM tenancies t
+       JOIN flats f ON t.flat_id = f.id
+       JOIN buildings b ON f.building_id = b.id
+       JOIN users u ON t.tenant_id = u.id
+       WHERE b.owner_id = ? AND t.status = 'active'`,
+      [req.user.id]
+    );
+    res.json(tenancies);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching owner tenancies", error: error.message });
+  }
+});
+
+
 const PORT = 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

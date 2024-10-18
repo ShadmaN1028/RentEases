@@ -19,12 +19,16 @@ import TenantNotifications from "./Tenant_notf";
 import SendNotification from "./send_notf";
 import ServiceRequestList from "./serreqlist";
 import ServiceRequestForm from "./serreqform";
+import PaymentStatus from "./paymentstat";
+import Navbar from "./navbar";
 
 
 function App() {
   return (
     <>
+    
       <Router>
+      <Navbar/>
         <Routes>
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
@@ -44,6 +48,7 @@ function App() {
           <Route path="/send_notf" element={<SendNotification />} />
           <Route path="/ser_req_list" element={<ServiceRequestList />} />
           <Route path="/ser_req_form" element={<ServiceRequestForm />} />
+          <Route path="/payment_stat" element={<PaymentStatus />} />
         </Routes>
       </Router>
       <Toaster />

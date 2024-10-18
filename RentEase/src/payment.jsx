@@ -13,7 +13,7 @@ export default function Payments() {
 
   const fetchTenancies = async () => {
     try {
-      const response = await fetch('http://localhost:8080/tenant/tenancies', {
+      const response = await fetch('http://localhost:8080/owner/tenancies', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
