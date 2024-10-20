@@ -55,7 +55,7 @@ export default function ServiceRequest() {
       const data = await response.json();
       if (response.ok) {
         toast.success("Service request submitted successfully");
-        navigate("/tenant-dashboard");
+        navigate("/tenant_dash");
       } else {
         toast.error(data.message || "Error submitting service request");
       }

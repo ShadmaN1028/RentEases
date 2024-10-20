@@ -130,7 +130,7 @@ const TenantDashboard = () => {
       </div>
       <div className="mt-8">
         <Link
-          to="/service-request"
+          to="/req_ser  "
           className="rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700"
         >
           Submit Service Request
